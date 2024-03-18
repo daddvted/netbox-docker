@@ -1,6 +1,7 @@
 ARG FROM
 FROM ${FROM} as builder
 
+COPY patch/sources.list /etc/apt/sources.list
 RUN export DEBIAN_FRONTEND=noninteractive \
     && apt-get update -qq \
     && apt-get upgrade \
@@ -23,7 +24,7 @@ RUN export DEBIAN_FRONTEND=noninteractive \
       python3-pip \
       python3-venv \
     && python3 -m venv /opt/netbox/venv \
-    && /opt/netbox/venv/bin/python3 -m pip install --upgrade \
+    && /opt/netbox/venv/bin/python3 -m pip install -i http://mirrors.aliyun.com/pypi/simple --trusted-host mirrors.aliyun.com --upgrade \
       pip \
       setuptools \
       wheel
@@ -39,7 +40,7 @@ RUN \
     # we have potential version conflicts and the build will fail.
     # That's why we just replace it in the original requirements.txt.
     sed -i -e 's/social-auth-core\[openidconnect\]/social-auth-core\[all\]/g' /requirements.txt && \
-    /opt/netbox/venv/bin/pip install \
+    /opt/netbox/venv/bin/pip install -i http://mirrors.aliyun.com/pypi/simple --trusted-host mirrors.aliyun.com\
       -r /requirements.txt \
       -r /requirements-container.txt
 
@@ -50,6 +51,7 @@ RUN \
 ARG FROM
 FROM ${FROM} as main
 
+COPY patch/sources.list /etc/apt/sources.list
 RUN export DEBIAN_FRONTEND=noninteractive \
     && apt-get update -qq \
     && apt-get upgrade \
