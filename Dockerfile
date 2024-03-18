@@ -92,6 +92,7 @@ COPY docker/housekeeping.sh /opt/netbox/housekeeping.sh
 COPY docker/launch-netbox.sh /opt/netbox/launch-netbox.sh
 COPY configuration/ /etc/netbox/config/
 COPY docker/nginx-unit.json /etc/unit/
+COPY patch/export.py /opt/netbox/venv/lib/python3.11/site-packages/django_tables2/export/export.py
 
 WORKDIR /opt/netbox/netbox
 
