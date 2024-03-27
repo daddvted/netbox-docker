@@ -193,6 +193,9 @@ if [ "${2}" != "--push-only" ] && [ -z "${SKIP_GIT}" ]; then
     $DRY git fetch -qp --depth 10 origin "${NETBOX_BRANCH}"
     $DRY git checkout -qf FETCH_HEAD
     $DRY git prune
+
+    # Replace Version with TAG
+    sed -i -E 's@HOSTNAME = (.*)@HOSTNAME = '"$TAG"'@' "netbox/netbox/settings.py"
   )
   echo "✅ Checked out NetBox"
 fi
