@@ -195,7 +195,7 @@ if [ "${2}" != "--push-only" ] && [ -z "${SKIP_GIT}" ]; then
     $DRY git prune
 
     # Replace Version with TAG
-    sed -i -E 's@HOSTNAME = (.*)@HOSTNAME = '"$TAG"'@' "netbox/netbox/settings.py"
+    sed -i -E 's@HOSTNAME = (.*)@HOSTNAME = '\""$TAG"\"'@' "netbox/netbox/settings.py"
   )
   echo "✅ Checked out NetBox"
 fi
