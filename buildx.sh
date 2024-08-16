@@ -414,17 +414,17 @@ if [ -n "${NO_PROXY}" ]; then
 fi
 
 DOCKER_BUILD_ARGS+=(--platform "${BUILDX_PLATFORM-linux/amd64}")
-#if [ "${2}" == "--push" ]; then
-#  # output type=docker does not work with pushing
-#  DOCKER_BUILD_ARGS+=(
-#    --output=type=image
-#    --push
-#  )
-#else
-#  DOCKER_BUILD_ARGS+=(
-#    --output=type=docker
-#  )
-#fi
+if [ "${2}" == "--push" ]; then
+  # output type=docker does not work with pushing
+  DOCKER_BUILD_ARGS+=(
+    --output=type=image
+    --push
+  )
+else
+  DOCKER_BUILD_ARGS+=(
+    --output=type=docker
+  )
+fi
 
 ###
 # Building the docker image
@@ -440,7 +440,9 @@ fi
 
 echo "🐳 Building the Docker image '${TARGET_DOCKER_TAG_PROJECT}'."
 echo "    Build reason set to: ${BUILD_REASON}"
-$DRY docker build \
+$DRY docker buildx \
+  --builder "${BUILDX_BUILDER_NAME}" \
+  build \
   "${DOCKER_BUILD_ARGS[@]}" \
   .
 echo "✅ Finished building the Docker images"
