@@ -47,8 +47,8 @@
       "module": "netbox.wsgi",
       "home": "/opt/netbox/venv",
       "processes": {
-        "max": 4,
-        "spare": 1,
+        "max": 8,
+        "spare": 2,
         "idle_timeout": 120
       }
     }
